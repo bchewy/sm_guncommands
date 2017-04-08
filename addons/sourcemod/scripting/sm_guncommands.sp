@@ -11,7 +11,7 @@
 //#include <sdkhooks>
 
 #pragma newdecls required
-
+g_iSpam[MAXPLAYERS+1];
 EngineVersion g_Game;
 
 public Plugin myinfo = 
@@ -31,15 +31,45 @@ public void OnPluginStart()
 		SetFailState("This plugin is for CSGO/CSS only.");	
 	}
 	CreateConVar("sm_guncommands_version", PLUGIN_VERSION, "Guncommands version");
-	RegConsoleCmd("sm_ak47", Command_GunKnife, "Spawns a knife", 0);
+	RegConsoleCmd("sm_ak47", Command_ak, "Spawns a knife", 0);
 	
 }
-public Action Command_GunKnife(int client,int args)
+public void OnClientConnected(int client){
+
+	g_iSpam[client] = 0;
+
+}
+public Action Command_ak(int client,int args)
 {
 
 	GivePlayerItem(client, "weapon_ak47");
 	PrintToChat(client, "An AK47 has been dropped for you!");
+	if(g_iSpam[client]<GetTime())
+	{
 
+	g_iSpam[client] = GetTime()+60;
+
+	}
+		
+	
+	return Plugin_Handled;
+}
+public Action Command_bizon(int client,int args)
+{
+
+	GivePlayerItem(client, "weapon_bizon");
+	PrintToChat(client, "A bizon has been dropped for you!");
+	
+	
+	return Plugin_Handled;
+}
+public Action Command_negev(int client,int args)
+{
+
+	GivePlayerItem(client, "weapon_negev");
+	PrintToChat(client, "A Negev has been dropped for you!");
+	
+	
 	return Plugin_Handled;
 }
 
