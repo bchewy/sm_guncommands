@@ -11,7 +11,7 @@
 //#include <sdkhooks>
 
 #pragma newdecls required
-g_iSpam[MAXPLAYERS+1];
+int g_iSpam[MAXPLAYERS+1];
 EngineVersion g_Game;
 
 public Plugin myinfo = 
@@ -42,11 +42,11 @@ public void OnClientConnected(int client){
 public Action Command_ak(int client,int args)
 {
 
-	GivePlayerItem(client, "weapon_ak47");
-	PrintToChat(client, "An AK47 has been dropped for you!");
+
 	if(g_iSpam[client]<GetTime())
 	{
-
+	GivePlayerItem(client, "weapon_ak47");
+	PrintToChat(client, "An AK47 has been dropped for you!");
 	g_iSpam[client] = GetTime()+60;
 
 	}
