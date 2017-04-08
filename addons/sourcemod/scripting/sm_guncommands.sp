@@ -31,7 +31,7 @@ public void OnPluginStart()
 		SetFailState("This plugin is for CSGO/CSS only.");	
 	}
 	CreateConVar("sm_guncommands_version", PLUGIN_VERSION, "Guncommands version");
-	RegConsoleCmd("sm_ak47", Command_ak, "Spawns a knife", 0);
+	RegConsoleCmd("sm_ak47", Command_ak, "Spawns a ak47",0);
 	
 }
 public void OnClientConnected(int client){
@@ -45,6 +45,10 @@ public Action Command_ak(int client,int args)
 
 	if(g_iSpam[client]<GetTime())
 	{
+	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
+	CS_DropWeapon(client, weapon, false, true);
+
+
 	GivePlayerItem(client, "weapon_ak47");
 	PrintToChat(client, "An AK47 has been dropped for you!");
 	g_iSpam[client] = GetTime()+60;
@@ -54,22 +58,5 @@ public Action Command_ak(int client,int args)
 	
 	return Plugin_Handled;
 }
-public Action Command_bizon(int client,int args)
-{
 
-	GivePlayerItem(client, "weapon_bizon");
-	PrintToChat(client, "A bizon has been dropped for you!");
-	
-	
-	return Plugin_Handled;
-}
-public Action Command_negev(int client,int args)
-{
-
-	GivePlayerItem(client, "weapon_negev");
-	PrintToChat(client, "A Negev has been dropped for you!");
-	
-	
-	return Plugin_Handled;
-}
 
