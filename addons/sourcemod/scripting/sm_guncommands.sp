@@ -196,24 +196,29 @@ public Action Command_m4a1(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_M4Price.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime() && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
 	{
 	
 	SetClientMoney(client,cmoney - gunprice);
+	if (GetConVarInt(g_DropPri) != 1)
+	{
+		
 	//Forces player to drop his/her weapon=====
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
 	CS_DropWeapon(client, weapon, false, true);
 	//========================================
 	GivePlayerItem(client, "weapon_m4a1");
 	PrintToChat(client, " \x04 An M4A1 has been dropped for you!");
+	
+
 	g_iSpam[client] = GetTime()+5;
 
 	}
 	else if(GetConVarInt(g_DropPri)!=0)
 	{
 	SetClientMoney(client,cmoney - gunprice);
-	PrintToChat(client, " \x04 An M4A1 has been dropped for you!");
 	GivePlayerItem(client, "weapon_m4a1");
+	PrintToChat(client, " \x04 An M4A1 has been dropped for you!");
 	g_iSpam[client] = GetTime()+5;
 
 	}
@@ -226,6 +231,6 @@ public Action Command_m4a1(int client,int args)
 
 
 	
-
+}
 	return Plugin_Handled;
 }
