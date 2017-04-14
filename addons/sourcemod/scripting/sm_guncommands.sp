@@ -8,12 +8,11 @@
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
-#include <morecolors.inc>
-//#include <sdkhooks>
+#include <smlib>
+
 
 #pragma newdecls required
 int g_iSpam[MAXPLAYERS+1];
-int g_cvarRequiredFlag = -1;
 EngineVersion g_Game;
 
 public Plugin myinfo = 
@@ -22,9 +21,9 @@ public Plugin myinfo =
 	author = PLUGIN_AUTHOR,
 	description = "gun commands",
 	version = PLUGIN_VERSION,
-	url = "bchewy.me"
+	url = ""
 };
-
+ 
 public void OnPluginStart()
 {
 	g_Game = GetEngineVersion();
@@ -33,14 +32,13 @@ public void OnPluginStart()
 		SetFailState("This plugin is for CSGO/CSS only.");	
 	}
 	CreateConVar("sm_guncommands_version", PLUGIN_VERSION, "Guncommands version");
-	CreateConvar("sm_flag_guns", ADMFLAG_GENERIC, "Default flag for vip/admin commands")
 	RegConsoleCmd("sm_ak47", Command_ak, "Spawns a ak47",0);
 	RegConsoleCmd("sm_ak", Command_ak, "Spawns a ak47", 0);
-	RegAdminCmd("sm_negev", Command_negev, ADMFLAG_CUSTOM1, "- Spawns you a RPG");
-	
-	
-	
+	RegConsoleCmd("sm_bzn", Command_bzn, "Spawns a bizon", 0);
+	RegConsoleCmd("sm_bizon", Command_bzn, "Spawns a bizon", 0);
+	RegConsoleCmd("sm_flash", Command_flash, "Spawns a flashbang", 0);
 }
+
 public void OnClientConnected(int client){
 
 	g_iSpam[client] = 0;
@@ -49,7 +47,6 @@ public void OnClientConnected(int client){
 public Action Command_ak(int client,int args)
 {
 
-
 	if(g_iSpam[client]<GetTime())
 	{
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
@@ -57,35 +54,43 @@ public Action Command_ak(int client,int args)
 
 
 	GivePlayerItem(client, "weapon_ak47");
-	PrintToChat(client, "{lime}An AK47 has been dropped for you!");
-	g_iSpam[client] = GetTime()+60;
+	PrintToChat(client, "\x04 An AK47 has been dropped for you!");
+	g_iSpam[client] = GetTime()+5;
 
 	}
-		
-	
+
 	return Plugin_Handled;
 }
-public Action Command_negev(int client,int args)
+public Action Command_bzn(int client,int args)
 {
-	if []g_cvarRequiredFlag] && !GetClientPrivilege(client, [g_cvarRequiredFlag])
-	{
-		PrintToChat(client, "You do not have permission to spawn this weapon");
-		return Plugin_Handled;
-	
-	}
+
 	if(g_iSpam[client]<GetTime())
 	{
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
 	CS_DropWeapon(client, weapon, false, true);
 
 
-	GivePlayerItem(client, "weapon_negev");
-	PrintToChat(client, "A NEGEV has been dropped for you!");
-	g_iSpam[client] = GetTime()+60;
+	GivePlayerItem(client, "weapon_bizon");
+	PrintToChat(client, "\x04 A bizon has been dropped for you!");
+	g_iSpam[client] = GetTime()+5;
 
 	}
-		
-	
+
+	return Plugin_Handled;
+}
+public Action Command_flash(int client,int args)
+{
+
+	if(g_iSpam[client]<GetTime())
+	{
+	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
+
+	GivePlayerItem(client, "weapon_flashbang");
+	PrintToChat(client, "\x04 A flashbang has been dropped for you!");
+	g_iSpam[client] = GetTime()+5;
+
+	}
+
 	return Plugin_Handled;
 }
 
