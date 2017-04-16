@@ -1,9 +1,7 @@
 # Gun Commands for Sourcemod
 
 TODO: 
-1. Add a money value on guns (so that player's money will be minus-ed)
-2. Add other guns
-3. Add convars for primary weapon (eg: sv_guncommands_primaryequipped 1)
+
 
 ## Installation
 
