@@ -17,7 +17,7 @@
 #include <sdktools>
 #include <cstrike>
 #include <smlib>
-
+// Written by master shake sidezz or Eassizde! Thanks a bunch :')
 stock SetClientMoney(int client, int value)
 {
 	int offset = FindSendPropInfo("CCSPlayer", "m_iAccount");
