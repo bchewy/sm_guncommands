@@ -1,7 +1,10 @@
 // Made with help of the following people!
 //	Shanapu - timer help!
-//	Master Shake Sidezz! - A lot of help with 
-//	teaching me how to use create cvars and use them, along with the money!
+////////////////////////////////////////////////////////////////////////////////////
+//	Master Shake Sidezz! - A lot of help with									////
+//	teaching me how to use create cvars and use them, along with the money!		////
+// 	PS : Sidez wrote the stock functions for money too! Thanks <3<3<3			////
+////////////////////////////////////////////////////////////////////////////////////
 //	shadowz_au - some basic help along with the code clean up
 //
 //
@@ -11,13 +14,13 @@
 #define DEBUG
 
 #define PLUGIN_AUTHOR "bchewy/shanapu/master shake sidezz/shadowz_au"
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.2"
 
 #include <sourcemod>
 #include <sdktools>
 #include <cstrike>
 #include <smlib>
-// Written by master shake sidezz or Eassizde! Thanks a bunch :')
+// Written by master shake sidezz or Eassizde! Thanks a bunch :')/////////////////////////////////////////
 stock SetClientMoney(int client, int value)
 {
 	int offset = FindSendPropInfo("CCSPlayer", "m_iAccount");
@@ -29,10 +32,10 @@ stock GetClientMoney(int client)
     int offset = FindSendPropInfo("CCSPlayer", "m_iAccount");
     return GetEntData(client, offset);
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma newdecls required
 int g_iSpam[MAXPLAYERS+1];
-//Guns
+//Guns///////////////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_AKPrice;
 ConVar g_AwpPrice;
 ConVar g_M4Price;
@@ -40,40 +43,44 @@ ConVar g_AUGPrice;
 ConVar g_FAMASPrice;
 ConVar g_M4SPrice;
 
-//SMG
+//SMG///////////////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_BZNPrice;
 ConVar g_P90Price;
-// Pistols
+// Pistols///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ConVar g_USPPrice;
-//Extras
+//Extras///////////////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_DropPri;
 ConVar g_DropSec;
 ConVar g_GiveMoney;
 ConVar g_MoneyFlag;
 EngineVersion g_Game;
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Plugin myinfo = 
 {
-	name = "Gun Commands",
+	name = "SM Gun Commands CSGO",
 	author = PLUGIN_AUTHOR,
-	description = "gun commands",
+	description = "Gun Commands, spawn your weapons with commands!",
 	version = PLUGIN_VERSION,
 	url = ""
 };
  
 public void OnPluginStart()
 {
+	//DEFAULT SPEDIT code, 
+	// g_game is a global variable decleared with GetEngineVersion
+	// an if statement is then written to confirm if it is indeed on CSGO
+	// else write failstate
 	g_Game = GetEngineVersion();
-	if(g_Game != Engine_CSGO && g_Game != Engine_CSS)
+	if(g_Game != Engine_CSGO)
 	{
-		SetFailState("This plugin is for CSGO/CSS only.");	
+		SetFailState("This plugin is for CSGO only");	
 	}
 	
 	//Version
 	CreateConVar("sm_guncommands_version", PLUGIN_VERSION, "Guncommands version");
 	
-	//Weapon price convars
+	//Weapon price convars//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	g_AKPrice = CreateConVar("sm_gc_ak_p", "2500", "AK's price");
 	g_AwpPrice = CreateConVar("sm_gc_awp_p", "2500", "Awp's price");
@@ -88,21 +95,24 @@ public void OnPluginStart()
 	
 	//Pistol convars
 	g_USPPrice = CreateConVar("sm_gc_usp_p", "2000", "USP MANIA!");	
-	
-	//Extra convars
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Extra convars/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	g_DropPri = CreateConVar("sm_gc_dropprimary", "1", "Force the player to drop his/her primary weapon? 1- yes 0 - no");
 	g_DropSec = CreateConVar("sm_gc_dropsecondary", "1", "Force the player to drop his/her secondary weapon? 1- yes 0 - no");
 	g_GiveMoney = CreateConVar("sm_gc_givemoney", "10000", "The amount of money you're gonna set for /moneyg");
-	g_MoneyFlag = CreateConVar("sm_moneygive_flag", "a", "The sourcemod flag client needs in order to use it, leave empty to disable.", g_MoneyFlag);
-	//Commands
+	// WIP
+	//g_MoneyFlag = CreateConVar("sm_moneygive_flag", "a", "The sourcemod flag client needs in order to use it, leave empty to disable.", g_MoneyFlag);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Commands//////////////////////////////////////////////////////////
 	//Primary
 	RegConsoleCmd("sm_ak", Command_ak, "Spawns a ak47", 0);
 	RegConsoleCmd("sm_aug", Command_aug, "Spawns a aug", 0);
 	RegConsoleCmd("sm_famas", Command_famas, "Spawns a famas", 0);
-	RegConsoleCmd("sm_awp", Command_awp, "AWP MANIA!", 0);
 	RegConsoleCmd("sm_m4", Command_m4a1, "M4A1!", 0);
 	RegConsoleCmd("sm_m4s", Command_m4a1s, "M4A1S!", 0);
 	
+	//SNIPER
+	RegConsoleCmd("sm_awp", Command_awp, "AWP MANIA!", 0);
 	//SMG
 	RegConsoleCmd("sm_bzn", Command_bzn, "Spawns a bizon", 0);
 	RegConsoleCmd("sm_bizon", Command_bzn, "Spawns a bizon", 0);
@@ -120,7 +130,7 @@ public void OnPluginStart()
 	RegConsoleCmd("sm_kevlar", Command_armor, "Spawns a flashbang", 0);
 	RegConsoleCmd("sm_kev", Command_armor, "Spawns a flashbang", 0);
 	RegAdminCmd("sm_moneyg", Command_moneyg,ADMFLAG_ROOT);
-	
+	////////////////////////////////////////////////////////////////////
 	AutoExecConfig(true, "sm_guncommands_csgo");
 }
 
@@ -129,7 +139,7 @@ public void OnClientConnected(int client){
 	g_iSpam[client] = 0;
 
 }
-//AK47
+//AK47//////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_ak(int client,int args)
 {
 	//Declaring the client's money
@@ -137,7 +147,7 @@ public Action Command_ak(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AKPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -161,7 +171,8 @@ public Action Command_ak(int client,int args)
 
 	return Plugin_Handled;
 }
-//BIZON
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//BIZON///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_bzn(int client,int args)
 {
 	//Declaring the client's money
@@ -193,7 +204,8 @@ public Action Command_bzn(int client,int args)
 
 	return Plugin_Handled;
 }
-//P90
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//P90///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_p90(int client,int args)
 {
 	//Declaring the client's money
@@ -225,7 +237,8 @@ public Action Command_p90(int client,int args)
 
 	return Plugin_Handled;
 }
-//AWP
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//AWP///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_awp(int client,int args)
 {
 	
@@ -234,7 +247,7 @@ public Action Command_awp(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AwpPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -258,8 +271,8 @@ public Action Command_awp(int client,int args)
 
 	return Plugin_Handled;
 }
-
-//Money G command
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//Money G command///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_moneyg(int client,int args)
 {
 	
@@ -277,8 +290,8 @@ public Action Command_moneyg(int client,int args)
 	}
 	return Plugin_Handled;
 }
-
-//M4A1
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//M4A1///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_m4a1(int client,int args)
 {
 	//Declaring the client's money
@@ -286,7 +299,7 @@ public Action Command_m4a1(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_M4Price.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -310,7 +323,8 @@ public Action Command_m4a1(int client,int args)
 
 	return Plugin_Handled;
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//M4A1-Silenced ///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_m4a1s(int client,int args)
 {
 	//Declaring the client's money
@@ -318,7 +332,7 @@ public Action Command_m4a1s(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_M4SPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -342,8 +356,8 @@ public Action Command_m4a1s(int client,int args)
 
 	return Plugin_Handled;
 }
-
-//AUG
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//AUG///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_aug(int client,int args)
 {
 	//Declaring the client's money
@@ -351,7 +365,7 @@ public Action Command_aug(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AUGPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -375,8 +389,8 @@ public Action Command_aug(int client,int args)
 
 	return Plugin_Handled;
 }
-
-//FAMAS
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//FAMAS///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_famas(int client,int args)
 {
 	//Declaring the client's money
@@ -384,7 +398,7 @@ public Action Command_famas(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_FAMASPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -409,7 +423,7 @@ public Action Command_famas(int client,int args)
 	return Plugin_Handled;
 }
 
-//USP
+//USP///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_usp(int client,int args)
 {
 	//Declaring the client's money
@@ -417,7 +431,7 @@ public Action Command_usp(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_USPPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -441,7 +455,8 @@ public Action Command_usp(int client,int args)
 
 	return Plugin_Handled;
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//HE GRENADE///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_he(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
@@ -451,15 +466,18 @@ public Action Command_he(int client,int args)
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
-
+	CS_DropWeapon(client, weapon, true, false);
 	GivePlayerItem(client, "weapon_hegrenade");
 	PrintToChat(client, " \x04 A HE Nade has been dropped for you!");
+		
 	g_iSpam[client] = GetTime()+5;
 
 	}
 
 	return Plugin_Handled;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//MOLOTOV ///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_molot(int client,int args)
 {	
 	
@@ -469,8 +487,8 @@ public Action Command_molot(int client,int args)
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
-	
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
+	CS_DropWeapon(client, weapon, true, false);
 
 	GivePlayerItem(client, "weapon_molotov");
 	PrintToChat(client, " \x04 A molotov has been dropped for you!");
@@ -480,6 +498,8 @@ public Action Command_molot(int client,int args)
 
 	return Plugin_Handled;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//FLASHBANG ///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_flash(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
@@ -489,7 +509,8 @@ public Action Command_flash(int client,int args)
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
-
+	CS_DropWeapon(client, weapon, true, false);
+		
 	GivePlayerItem(client, "weapon_flash");
 	PrintToChat(client, " \x04 A flashbang has been dropped for you!");
 	g_iSpam[client] = GetTime()+5;
@@ -498,6 +519,8 @@ public Action Command_flash(int client,int args)
 
 	return Plugin_Handled;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//DECOY GRENADE///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_decoy(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
@@ -507,6 +530,7 @@ public Action Command_decoy(int client,int args)
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
+	CS_DropWeapon(client, weapon, true, false);
 
 	GivePlayerItem(client, "weapon_decoy");
 	PrintToChat(client, " \x04 A decoy has been dropped for you!");
@@ -521,6 +545,8 @@ public Action Command_decoy(int client,int args)
 
 	return Plugin_Handled;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//ARMOR OR KEVLAR///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_armor(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
@@ -543,3 +569,4 @@ public Action Command_armor(int client,int args)
 
 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
