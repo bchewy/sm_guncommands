@@ -29,8 +29,21 @@ stock SetClientMoney(int client, int value)
 
 stock GetClientMoney(int client) 
 {
-    int offset = FindSendPropInfo("CCSPlayer", "m_iAccount");
-    return GetEntData(client, offset);
+	int offset = FindSendPropInfo("CCSPlayer", "m_iAccount");
+	return GetEntData(client, offset);
+}
+
+//Use this to consolidate some text and shorten the plugin
+//Plus this makes it easier to change wha the text says since you
+//Dont use translation files. -DeweY
+stock bool CheckClientMoney(int client, int clientmoney, int weaponprice)
+{
+	if(clientmoney < weaponprice)
+	{
+		PrintToChat(client, " \x04 You do not have enough money!");
+		return false;
+	}
+	return true;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma newdecls required
@@ -47,7 +60,7 @@ ConVar g_AwpPrice;
 
 //SMG//////////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_BZNPrice;
-ConVar g_P90Price
+ConVar g_P90Price;
 // Pistols/////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_USPPrice;
 
@@ -149,7 +162,8 @@ public Action Command_ak(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AKPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -167,9 +181,8 @@ public Action Command_ak(int client,int args)
 	}
 	else
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
-		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+		PrintToChat(client, " \x04 Please wait for %i seconds before using again.",g_iSpam[client]-GetTime());
+	}
 
 	return Plugin_Handled;
 }
