@@ -34,7 +34,7 @@ stock GetClientMoney(int client)
 }
 
 //Use this to consolidate some text and shorten the plugin
-//Plus this makes it easier to change wha the text says since you
+//Plus this makes it easier to change what the text says since you
 //Dont use translation files. -DeweY
 stock bool CheckClientMoney(int client, int clientmoney, int weaponprice)
 {
