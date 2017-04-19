@@ -179,7 +179,7 @@ public Action Command_ak(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
 		PrintToChat(client, " \x04 Please wait for %i seconds before using again.",g_iSpam[client]-GetTime());
 	}
@@ -195,7 +195,8 @@ public Action Command_bzn(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_BZNPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -211,11 +212,10 @@ public Action Command_bzn(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -228,7 +228,8 @@ public Action Command_p90(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_P90Price.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())// && GetConVarInt(g_DropPri)!=1)
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -244,11 +245,10 @@ public Action Command_p90(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -262,7 +262,8 @@ public Action Command_awp(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AwpPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -278,11 +279,10 @@ public Action Command_awp(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -293,10 +293,6 @@ public Action Command_moneyg(int client,int args)
 	
 	if(g_MoneyFlag)
 	{
-
-
-
-
 	//Declare client's money
 	int cmoney = GetClientMoney(client);
 	//Set's the client money following cvar
@@ -314,7 +310,8 @@ public Action Command_m4a1(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_M4Price.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -330,11 +327,11 @@ public Action Command_m4a1(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
 		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -347,7 +344,8 @@ public Action Command_m4a1s(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_M4SPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -363,11 +361,10 @@ public Action Command_m4a1s(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -380,7 +377,8 @@ public Action Command_aug(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_AUGPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -396,11 +394,10 @@ public Action Command_aug(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -413,7 +410,8 @@ public Action Command_famas(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_FAMASPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -429,11 +427,10 @@ public Action Command_famas(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -446,7 +443,8 @@ public Action Command_usp(int client,int args)
 	//Declaring gunprice that links to cvar
 	int gunprice = g_USPPrice.IntValue;
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 		SetClientMoney(client,cmoney - gunprice);
 
@@ -462,11 +460,10 @@ public Action Command_usp(int client,int args)
 			CS_DropWeapon(client, weapon, false, true);
 		}
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -477,7 +474,8 @@ public Action Command_he(int client,int args)
 	int cmoney = GetClientMoney(client);
 	int gunprice = 5000;
 	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
@@ -486,7 +484,6 @@ public Action Command_he(int client,int args)
 	PrintToChat(client, " \x04 A HE Nade has been dropped for you!");
 		
 	g_iSpam[client] = GetTime()+5;
-
 	}
 
 	return Plugin_Handled;
@@ -499,7 +496,8 @@ public Action Command_molot(int client,int args)
 	int cmoney = GetClientMoney(client);
 	int gunprice = 10000;
 	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
@@ -508,7 +506,6 @@ public Action Command_molot(int client,int args)
 	GivePlayerItem(client, "weapon_molotov");
 	PrintToChat(client, " \x04 A molotov has been dropped for you!");
 	g_iSpam[client] = GetTime()+5;
-
 	}
 
 	return Plugin_Handled;
@@ -520,7 +517,8 @@ public Action Command_flash(int client,int args)
 	int cmoney = GetClientMoney(client);
 	int gunprice = 5000;
 	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
@@ -541,7 +539,8 @@ public Action Command_decoy(int client,int args)
 	int cmoney = GetClientMoney(client);
 	int gunprice = 5000;
 	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
@@ -550,13 +549,12 @@ public Action Command_decoy(int client,int args)
 	GivePlayerItem(client, "weapon_decoy");
 	PrintToChat(client, " \x04 A decoy has been dropped for you!");
 	g_iSpam[client] = GetTime()+5;
-
 	}
-	else
+
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
+	}
 
 	return Plugin_Handled;
 }
@@ -567,7 +565,8 @@ public Action Command_armor(int client,int args)
 	int cmoney = GetClientMoney(client);
 	int gunprice = 2500;
 	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
 	{
 	SetClientMoney(client,cmoney - gunprice);
 	// Thanks to https://forums.alliedmods.net/showthread.php?t=250093
@@ -576,12 +575,9 @@ public Action Command_armor(int client,int args)
 	g_iSpam[client] = GetTime()+5;
 
 	}
-	else
+	else if (pass && g_iSpam[client] > GetTime())
 	{
-		PrintToChat(client, " \x04 You do not have enough money!");
 		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
-
-
+	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
