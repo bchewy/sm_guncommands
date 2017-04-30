@@ -63,7 +63,15 @@ ConVar g_BZNPrice;
 ConVar g_P90Price;
 // Pistols/////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_USPPrice;
-
+ConVar g_DeagPrice;
+ConVar g_F7Price;
+ConVar g_GLOCKPrice;
+ConVar g_P2KPrice;
+ConVar g_CZ7Price;
+ConVar g_ELITEPrice;
+ConVar g_R8Price;
+ConVar g_Tec9Price;
+ConVar g_P250Price;
 //Extras///////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_DropPri;
 ConVar g_DropSec;
@@ -109,18 +117,28 @@ public void OnPluginStart()
 	g_P90Price = CreateConVar("sm_gc_p90_p", "2500", "P900000!");
 	
 	//Pistol convars
-	g_USPPrice = CreateConVar("sm_gc_usp_p", "2000", "USP MANIA!");	
+	g_USPPrice = CreateConVar("sm_gc_usp_p", "200", "USP's' Price");	
+ 	g_DeagPrice = CreateConVar("sm_gc_deagle_p", "700", "Deagle's Price");	
+	g_F7Price = CreateConVar("sm_gc_fiveseven_p", "500", "Five Seven's Price");	
+	g_GLOCKPrice = CreateConVar("sm_gc_glocks_p", "200", "Glock's Price!");	
+	g_P2KPrice = CreateConVar("sm_gc_p2000_p", "200", "P2000's Price!");	
+	g_CZ7Price = CreateConVar("sm_gc_cz_p", "500", "CZ's Price!");	
+	g_ELITEPrice = CreateConVar("sm_gc_elites_p", "500", "Elite's Prices!!");	
+	g_R8Price = CreateConVar("sm_gc_R8_p", "700", "R8's Price!");	
+	g_Tec9Price = CreateConVar("sm_gc_tec9_p", "500", "Tec9's Price'!!");	
+	g_P250Price = CreateConVar("sm_gc_p250_p", "300", "P250's Price");	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Extra convars/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	g_DropPri = CreateConVar("sm_gc_dropprimary", "1", "Force the player to drop his/her primary weapon? 1- yes 0 - no");
 	g_DropSec = CreateConVar("sm_gc_dropsecondary", "1", "Force the player to drop his/her secondary weapon? 1- yes 0 - no");
 	g_GiveMoney = CreateConVar("sm_gc_givemoney", "10000", "The amount of money you're gonna set for /moneyg");
 	// WIP
-	//g_MoneyFlag = CreateConVar("sm_moneygive_flag", "a", "The sourcemod flag client needs in order to use it, leave empty to disable.", g_MoneyFlag);
+	g_MoneyFlag = CreateConVar("sm_moneygive_flag", "a", "The sourcemod flag client needs in order to use it, leave empty to disable.", g_MoneyFlag);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Commands//////////////////////////////////////////////////////////
 	//Primary
 	RegConsoleCmd("sm_ak", Command_ak, "Spawns a ak47", 0);
+	RegConsoleCmd("sm_ak47", Command_ak, "Spawns a ak47", 0);
 	RegConsoleCmd("sm_aug", Command_aug, "Spawns a aug", 0);
 	RegConsoleCmd("sm_famas", Command_famas, "Spawns a famas", 0);
 	RegConsoleCmd("sm_m4", Command_m4a1, "M4A1!", 0);
@@ -135,7 +153,19 @@ public void OnPluginStart()
 	
 	//Pistols
 	RegConsoleCmd("sm_usp", Command_usp, "USP MANIA", 0);
-	
+	RegConsoleCmd("sm_glock", Command_glock, "USP MANIA", 0);
+	RegConsoleCmd("sm_p250", Command_p250, "USP MANIA", 0);
+	RegConsoleCmd("sm_deag", Command_deag, "USP MANIA", 0);
+	RegConsoleCmd("sm_57", Command_57, "USP MANIA", 0);
+	RegConsoleCmd("sm_five7", Command_57, "USP MANIA", 0);
+	RegConsoleCmd("sm_cz", Command_cz, "USP MANIA", 0);
+	RegConsoleCmd("sm_r8", Command_r8, "USP MANIA", 0);
+	RegConsoleCmd("sm_elites", Command_elites, "USP MANIA", 0);
+	RegConsoleCmd("sm_tec9", Command_tec9, "USP MANIA", 0);
+	RegConsoleCmd("sm_t9", Command_tec9, "USP MANIA", 0);
+	RegConsoleCmd("sm_p2000", Command_p2k, "USP MANIA", 0);
+	RegConsoleCmd("sm_p2k", Command_p2k, "USP MANIA", 0);
+
 	//Grenades
 	RegConsoleCmd("sm_flash", Command_flash, "Spawns a flashbang", 0);
 	RegConsoleCmd("sm_he", Command_he, "Spawns a flashbang", 0);
@@ -144,7 +174,7 @@ public void OnPluginStart()
 	
 	RegConsoleCmd("sm_kevlar", Command_armor, "Spawns a flashbang", 0);
 	RegConsoleCmd("sm_kev", Command_armor, "Spawns a flashbang", 0);
-	RegAdminCmd("sm_moneyg", Command_moneyg,ADMFLAG_ROOT);
+	RegAdminCmd("sm_moneyg", Command_moneyg,g_MoneyFlag);
 	////////////////////////////////////////////////////////////////////
 	AutoExecConfig(true, "sm_guncommands_csgo");
 }
@@ -291,7 +321,7 @@ public Action Command_awp(int client,int args)
 public Action Command_moneyg(int client,int args)
 {
 	
-	if(g_MoneyFlag)
+	if(g_MoneyFlag == g_MoneyFlag)
 	{
 	//Declare client's money
 	int cmoney = GetClientMoney(client);
@@ -435,6 +465,7 @@ public Action Command_famas(int client,int args)
 	return Plugin_Handled;
 }
 
+
 //USP///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_usp(int client,int args)
 {
@@ -468,6 +499,327 @@ public Action Command_usp(int client,int args)
 	return Plugin_Handled;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Glock///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_glock(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_GLOCKPrice.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_glock");
+		PrintToChat(client, " \x04 A Glock Pistol has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//P250///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_p250(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_P250Price.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_p250");
+		PrintToChat(client, " \x04 A P250 Pistol has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//DEAGLE///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_deag(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_DeagPrice.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_deagle");
+		PrintToChat(client, " \x04 A Deagle has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//TEC9///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_tec9(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_Tec9Price.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_tec9");
+		PrintToChat(client, " \x04 A Tec9 has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//p2000///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_p2k(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_P2KPrice.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_hkp2000");
+		PrintToChat(client, " \x04 A p2000 has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//ELITES///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_elites(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_ELITEPrice.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_elite");
+		PrintToChat(client, " \x04 A Dualies has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//FIVESEVEN///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_57(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_F7Price.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_fiveseven");
+		PrintToChat(client, " \x04 A FiveSeven has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//R8///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_r8(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_R8Price.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_revolver");
+		PrintToChat(client, " \x04 A R8 has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//CZ///////////////////////////////////////////////////////////////////////////////////////////////////////
+public Action Command_cz(int client,int args)
+{
+	//Declaring the client's money
+	int cmoney = GetClientMoney(client);
+	//Declaring gunprice that links to cvar
+	int gunprice = g_CZ7Price.IntValue;
+
+	bool pass = CheckClientMoney(client, cmoney, gunprice);
+	if (pass && g_iSpam[client] < GetTime())
+	{
+		SetClientMoney(client,cmoney - gunprice);
+
+		GivePlayerItem(client, "weapon_cz75a");
+		PrintToChat(client, " \x04 A CZ75 has been dropped for you!");
+
+		g_iSpam[client] = GetTime()+5;
+		//Checks cvar
+		if (g_DropSec.BoolValue)
+		{
+			//Forces player to drop his/her weapon=====
+			int weapon = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+			CS_DropWeapon(client, weapon, false, true);
+		}
+	}
+	else if (pass && g_iSpam[client] > GetTime())
+	{
+		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
+	}
+
+	return Plugin_Handled;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
 //HE GRENADE///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_he(int client,int args)
 {
