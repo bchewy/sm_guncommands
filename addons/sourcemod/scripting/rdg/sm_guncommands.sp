@@ -169,10 +169,8 @@ public void OnPluginStart()
 	RegConsoleCmd("sm_p2k", Command_p2k, "USP MANIA", 0);
 
 	//Grenades
-	RegConsoleCmd("sm_flash", Command_flash, "Spawns a flashbang", 0);
 	RegConsoleCmd("sm_he", Command_he, "Spawns a flashbang", 0);
-	RegConsoleCmd("sm_molo", Command_molot, "Spawns a flashbang", 0);
-	RegConsoleCmd("sm_decoy", Command_decoy, "Spawns a flashbang", 0);
+
 	
 	RegConsoleCmd("sm_kevlar", Command_armor, "Spawns a flashbang", 0);
 	RegConsoleCmd("sm_kev", Command_armor, "Spawns a flashbang", 0);
@@ -827,7 +825,7 @@ public Action Command_cz(int client,int args)
 public Action Command_he(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
-	int gunprice = 5000;
+	int gunprice = 10000;
 	
 
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
@@ -863,81 +861,13 @@ public Action Command_he(int client,int args)
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //MOLOTOV ///////////////////////////////////////////////////////////////////////////////////////////////////////
-public Action Command_molot(int client,int args)
-{	
-	
-	int cmoney = GetClientMoney(client);
-	int gunprice = 11000;
-	
 
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
-	{
-	SetClientMoney(client,cmoney - gunprice);
-	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
-	CS_DropWeapon(client, weapon, true, false);
-
-	GivePlayerItem(client, "weapon_molotov");
-	PrintToChat(client, " \x04 A molotov has been dropped for you!");
-	g_iSpam[client] = GetTime()+5;
-	}
-	else
-	{
-		PrintToChat(client, " \x04 You do not have enough money!");
-		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
-
-	return Plugin_Handled;
-}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //FLASHBANG ///////////////////////////////////////////////////////////////////////////////////////////////////////
-public Action Command_flash(int client,int args)
-{
-	int cmoney = GetClientMoney(client);
-	int gunprice = 5000;
-	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
-	{
-	SetClientMoney(client,cmoney - gunprice);
-	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
 
-	GivePlayerItem(client, "weapon_flash");
-	PrintToChat(client, " \x04 A flashbang has been dropped for you!");
-	g_iSpam[client] = GetTime()+5;
-
-	}
-	else
-	{
-		PrintToChat(client, " \x04 You do not have enough money!");
-		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
-
-	return Plugin_Handled;
-}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //DECOY GRENADE///////////////////////////////////////////////////////////////////////////////////////////////////////
-public Action Command_decoy(int client,int args)
-{
-	int cmoney = GetClientMoney(client);
-	int gunprice = 7000;
-	
-	if (cmoney > gunprice && g_iSpam[client] < GetTime())
-	{
-	SetClientMoney(client,cmoney - gunprice);
-	int weapon = GetPlayerWeaponSlot(client, CS_SLOT_GRENADE);
 
-	GivePlayerItem(client, "weapon_decoy");
-	PrintToChat(client, " \x04 A decoy has been dropped for you!");
-	g_iSpam[client] = GetTime()+5;
-
-	}
-	else
-	{
-		PrintToChat(client, " \x04 You do not have enough money!");
-		PrintToChat(client, " \x04 or.. please wait for %i seconds.",g_iSpam[client]-GetTime());
-}
-
-	return Plugin_Handled;
-}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //ARMOR OR KEVLAR///////////////////////////////////////////////////////////////////////////////////////////////////////
 public Action Command_armor(int client,int args)
