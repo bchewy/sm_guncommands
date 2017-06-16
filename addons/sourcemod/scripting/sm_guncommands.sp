@@ -119,13 +119,13 @@ public void OnPluginStart()
 	
 	//Pistol convars
 	g_USPPrice = CreateConVar("sm_gc_usp_p", "200", "USP's' Price");	
- 	g_DeagPrice = CreateConVar("sm_gc_deagle_p", "700", "Deagle's Price");	
-	g_F7Price = CreateConVar("sm_gc_fiveseven_p", "500", "Five Seven's Price");	
-	g_GLOCKPrice = CreateConVar("sm_gc_glocks_p", "200", "Glock's Price!");	
+ 	g_DeagPrice = CreateConVar("sm_gc_deag_p", "700", "Deagle's Price");	
+	g_F7Price = CreateConVar("sm_gc_57_p", "500", "Five Seven's Price");	
+	g_GLOCKPrice = CreateConVar("sm_gc_glock_p", "200", "Glock's Price!");	
 	g_P2KPrice = CreateConVar("sm_gc_p2000_p", "200", "P2000's Price!");	
 	g_CZ7Price = CreateConVar("sm_gc_cz_p", "500", "CZ's Price!");	
 	g_ELITEPrice = CreateConVar("sm_gc_elites_p", "500", "Elite's Prices!!");	
-	g_R8Price = CreateConVar("sm_gc_R8_p", "700", "R8's Price!");	
+	g_R8Price = CreateConVar("sm_gc_r8_p", "700", "R8's Price!");	
 	g_Tec9Price = CreateConVar("sm_gc_tec9_p", "500", "Tec9's Price'!!");	
 	g_P250Price = CreateConVar("sm_gc_p250_p", "300", "P250's Price");	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
