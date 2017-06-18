@@ -9,10 +9,10 @@ TODO:
 - flag for certain commands
 - moneygive admin command <with specified flag>
 ## Installation
-
+```
 Upload .smx file to /plugins/ folder
 Configure configs in /cfg/sm_guncommands_csgo.cfg/
-
+```
 ## Gun List (Case sensitive)
 ```
 ak - AK47
@@ -54,5 +54,23 @@ sm_gc_dropprimary <0/1> - Force the player to drop his/her current primary weapo
 sm_gc_dropsecondary <0/1> - Force the player to drop his/her current secondary weapon? 1- Yes 0-No (Default :1)
 sm_gc_givemoney <value> - Amount of money given when client uses sm_moneyg (Default:10000)
 sm_moneygive_flag <flags> - WIP
+```
+
+## Changelog
+```
+V1.4
+- added RDG version (removed grenades except for HE nade)
+- clean up code
+- changed convars for guns to fit above
+V1.3
+- added all remaining pistols and convars for price
+V1.2
+- added usp-s,p90 and force conavr for secondaries
+V1.1
+- added all grenades into usage
+- added armor <sm_kev>
+V1.0
+- Launch
+
 ```
 Discussion : https://forums.alliedmods.net/showthread.php?p=2512096

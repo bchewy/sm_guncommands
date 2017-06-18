@@ -72,6 +72,13 @@ ConVar g_ELITEPrice;
 ConVar g_R8Price;
 ConVar g_Tec9Price;
 ConVar g_P250Price;
+// Grenades////////////////////////////////////////////////////////////////////////////////////////////
+ConVar g_HEPrice;
+ConVar g_MoloPrice;
+ConVar g_DecoyPrice;
+ConVar g_FlashBPrice;
+//ARMOR/////////////////////
+ConVar g_KEVPrice;
 //Extras///////////////////////////////////////////////////////////////////////////////////////////////
 ConVar g_DropPri;
 ConVar g_DropSec;
@@ -128,6 +135,14 @@ public void OnPluginStart()
 	g_R8Price = CreateConVar("sm_gc_r8_p", "700", "R8's Price!");	
 	g_Tec9Price = CreateConVar("sm_gc_tec9_p", "500", "Tec9's Price'!!");	
 	g_P250Price = CreateConVar("sm_gc_p250_p", "300", "P250's Price");	
+	
+	//Grenades convars
+	g_HEPrice = CreateConVar("sm_gc_he_p", "300", "HE Grenade price!'");
+	g_DecoyPrice = CreateConVar("sm_gc_decoy_p", "50", "Decoy grenade price!");	
+	g_MoloPrice = CreateConVar("sm_gc_molo_p", "400", "Molotov price!");	
+	g_FlashBPrice = CreateConVar("sm_gc_flash_p", "200", "Flashbang price!");
+
+	g_KEVPrice = CreateConVar("sm_gc_usp_p", "1500", "Armor price");
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Extra convars/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	g_DropPri = CreateConVar("sm_gc_dropprimary", "1", "Force the player to drop his/her primary weapon? 1- yes 0 - no");
@@ -827,7 +842,7 @@ public Action Command_cz(int client,int args)
 public Action Command_he(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
-	int gunprice = 5000;
+	int gunprice = g_HEPrice.IntValue;
 	
 
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
@@ -867,7 +882,7 @@ public Action Command_molot(int client,int args)
 {	
 	
 	int cmoney = GetClientMoney(client);
-	int gunprice = 11000;
+	int gunprice = g_MoloPrice.IntValue;
 	
 
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
@@ -893,7 +908,7 @@ public Action Command_molot(int client,int args)
 public Action Command_flash(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
-	int gunprice = 5000;
+	int gunprice = g_FlashBPrice.IntValue;
 	
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
@@ -918,7 +933,7 @@ public Action Command_flash(int client,int args)
 public Action Command_decoy(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
-	int gunprice = 7000;
+	int gunprice = g_DecoyPrice.IntValue;
 	
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
 	{
@@ -943,7 +958,7 @@ public Action Command_decoy(int client,int args)
 public Action Command_armor(int client,int args)
 {
 	int cmoney = GetClientMoney(client);
-	int gunprice = 1500;
+	int gunprice = g_KEVPrice.IntValue;
 	
 
 	if (cmoney > gunprice && g_iSpam[client] < GetTime())
