@@ -59,9 +59,12 @@ sm_moneygive_flag <flags> - WIP
 ## Changelog
 ```
 V1.4
-- added RDG version (removed grenades except for HE nade)
+- removed RDG version (removed grenades except for HE nade)
 - clean up code
 - changed convars for guns to fit above
+- update compile.exe and spcompile.exe for windows 10 compiliation
+- added convar for grenade prices
+- cleaned up folder organisation (plugins folder is not added)
 V1.3
 - added all remaining pistols and convars for price
 V1.2
