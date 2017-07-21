@@ -2,12 +2,7 @@
 # Made specifically for zombie escape servers <ZE>
 
 TODO: 
-- cleanup code
-- more guns/custom models for guns? (not weapon skins)
-- chat triggers in a config file for different gun types
-- convar to remove chat triggers
-- flag for certain commands
-- moneygive admin command <with specified flag>
+NO LONGER SUPPORTED
 ## Installation
 ```
 Upload .smx file to /plugins/ folder
